@@ -23,7 +23,7 @@ public class ParkingLotSytem {
         List<Level> levels = new ArrayList<>();
         levels.add(new Level(1, level1Spots));
 
-        ParkingLot parkingLot = new ParkingLot(levels, new FirstAssignmentStrategy());
+        ParkingLot parkingLot = ParkingLot.getInstance(levels, new FirstAssignmentStrategy());
         ParkingService parkingService = new ParkingService(parkingLot);
 
         Vehicle vehicle = new Car("1234567890");

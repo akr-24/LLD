@@ -2,12 +2,21 @@ package parkingLotSystem.model;
 import java.util.List;
 import parkingLotSystem.strategy.SpotAssignmentStrategy;
 public class ParkingLot {
+    private static ParkingLot instance;
+
     private final List<Level> levels;
     private final SpotAssignmentStrategy spotAssignmentStrategy;
 
-    public ParkingLot(List<Level> levels, SpotAssignmentStrategy spotAssignmentStrategy) {
+    private ParkingLot(List<Level> levels, SpotAssignmentStrategy spotAssignmentStrategy) {
         this.levels = levels;
         this.spotAssignmentStrategy = spotAssignmentStrategy;
+    }
+
+    public static ParkingLot getInstance(List<Level> levels, SpotAssignmentStrategy spotAssignmentStrategy) {
+        if (instance == null) {
+            instance = new ParkingLot(levels, spotAssignmentStrategy);
+        }
+        return instance;
     }
 
     public ParkingTicket park(Vehicle vehicle) {
