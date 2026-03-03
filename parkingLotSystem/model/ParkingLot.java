@@ -12,14 +12,14 @@ public class ParkingLot {
         this.spotAssignmentStrategy = spotAssignmentStrategy;
     }
 
-    public static ParkingLot getInstance(List<Level> levels, SpotAssignmentStrategy spotAssignmentStrategy) {
+    public static synchronized ParkingLot getInstance(List<Level> levels, SpotAssignmentStrategy spotAssignmentStrategy) {
         if (instance == null) {
             instance = new ParkingLot(levels, spotAssignmentStrategy);
         }
         return instance;
     }
 
-    public ParkingTicket park(Vehicle vehicle) {
+    public synchronized ParkingTicket park(Vehicle vehicle) {
         Spot allocatedSpot = spotAssignmentStrategy.assignSpot(levels, vehicle);
         if(allocatedSpot != null) {
             ParkingTicket ticket = new ParkingTicket(vehicle, allocatedSpot);

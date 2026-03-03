@@ -15,7 +15,7 @@ public class ParkingService {
         this.activeTickets = new HashMap<>();
     }
 
-    public ParkingTicket park(Vehicle vehicle) {
+    public synchronized ParkingTicket park(Vehicle vehicle) {
         ParkingTicket ticket = parkingLot.park(vehicle);
         if (ticket != null) {
             activeTickets.put(ticket.getTicketId(), ticket);
@@ -23,7 +23,7 @@ public class ParkingService {
         return ticket;
     }
 
-    public void exitVehicle(String ticketId) {
+    public synchronized void exitVehicle(String ticketId) {
         ParkingTicket ticket = activeTickets.get(ticketId);
         if (ticket == null) {
             throw new IllegalArgumentException("Invalid ticket");
