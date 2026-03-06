@@ -1,29 +1,31 @@
 package vendingMachine.repository;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import vendingMachine.exceptions.ProductNotFoundException;
 
-import vendingMachine.enums.*;
 import vendingMachine.model.*;
 
 
-public class productRepository {
-    List<Product> products = new ArrayList<>();
+public class ProductRepository {
+    private Map<String, Product> products = new HashMap<>();
 
-    void save(Product product){
-        products.add(product);
+    public void save(Product product){
+        products.put(product.getId(), product);
     }
 
-    List<Product> getProductList(){
-        return products;
+    public List<Product>getProductList(){
+       return new ArrayList<>(products.values());
     }
 
-    Product getProductById(String productId){
-        for(Product product: products){
-            if(product.getProductId() == productId){
-                return product;
-            }
+    public Product getProductById(String productId){ 
+        Product p = products.get(productId);
+        
+        if(p==null){
+            throw new ProductNotFoundException();
         }
 
-        return "Couldn't find a product by this ID"
+        return p;
     }
 }
