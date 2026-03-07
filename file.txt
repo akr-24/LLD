@@ -1,2 +1,4 @@
 2026-03-07T12:03:38.201071900Z ERROR This is second error msg
 2026-03-07T12:04:33.196417100Z ERROR This is second error msg
+2026-03-07T12:49:23.394104500Z DEBUG This is my first log
+2026-03-07T12:49:23.394104500Z ERROR This is second error msg

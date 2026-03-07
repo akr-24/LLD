@@ -1,9 +1,9 @@
 package loggingSystem.factory;
 
-import loggingSystem.model.ConsoleDestination;
-import loggingSystem.model.DatabaseDestination;
-import loggingSystem.model.FileDestination;
-import loggingSystem.interfaces.Destination;
+import loggingSystem.destination.ConsoleDestination;
+import loggingSystem.destination.DatabaseDestination;
+import loggingSystem.destination.FileDestination;
+import loggingSystem.destination.Destination;
 public class DestinationFactory {
 
    public static Destination createDestination(String destination){

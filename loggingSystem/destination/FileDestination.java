@@ -1,5 +1,6 @@
-package loggingSystem.model;
-import loggingSystem.interfaces.*;
+package loggingSystem.destination;
+
+import loggingSystem.model.Message;
 import java.io.FileWriter;
 
 public class FileDestination implements Destination {

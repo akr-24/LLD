@@ -5,7 +5,7 @@ import loggingSystem.factory.DestinationFactory;
 
 public class Main {
     public static void main(String[] args){
-        LoggingSystem logSystem = LoggingSystem.getInstance(LogLevel.INFO);
+        LoggingSystem logSystem = LoggingSystem.getInstance(LogLevel.DEBUG);
         logSystem.addDestination(DestinationFactory.createDestination("File"));
         logSystem.addDestination(DestinationFactory.createDestination("Console"));
 

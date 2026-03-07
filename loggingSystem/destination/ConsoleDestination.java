@@ -1,6 +1,6 @@
-package loggingSystem.model;
+package loggingSystem.destination;
 
-import loggingSystem.interfaces.Destination;
+import loggingSystem.model.Message;
 
 public class ConsoleDestination implements Destination {
     @Override

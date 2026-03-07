@@ -1,5 +1,6 @@
-package loggingSystem.interfaces;
-import loggingSystem.model.*;
+package loggingSystem.destination;
+
+import loggingSystem.model.Message;
 
 public interface Destination {
     public void printLogMessage(Message msg);

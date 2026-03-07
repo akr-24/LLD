@@ -1,6 +1,6 @@
-package loggingSystem.model;
+package loggingSystem.destination;
 
-import loggingSystem.interfaces.*;
+import loggingSystem.model.Message;
 
 import java.sql.*;
 import java.time.Instant;

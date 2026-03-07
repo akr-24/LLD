@@ -2,7 +2,7 @@ package loggingSystem.system;
 
 import loggingSystem.enums.LogLevel;
 import loggingSystem.model.Message;
-import loggingSystem.interfaces.Destination;
+import loggingSystem.destination.Destination;
 
 import java.util.List;
 import java.util.concurrent.BlockingQueue;
@@ -68,6 +68,16 @@ public class LoggingSystem {
         });
         worker.setDaemon(true);
         worker.start();
+
+        // drain any remaining messages in the queue before JVM exits
+        Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+            worker.interrupt();
+            Message remaining;
+            while((remaining = logQueue.poll()) != null){
+                for(Destination d : destinations)
+                    d.printLogMessage(remaining);
+            }
+        }));
     }
 
 }
