@@ -5,13 +5,15 @@ import loggingSystem.model.Message;
 import loggingSystem.interfaces.Destination;
 
 import java.util.List;
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.LinkedBlockingQueue;
 
 public class LoggingSystem {
 
-    // volatile ensures changes to logLevel are visible across all threads
     private volatile LogLevel logLevel;
     private final List<Destination> destinations;
+    private final BlockingQueue<Message> logQueue;
 
     // --- Singleton ---
     private static volatile LoggingSystem instance;
@@ -19,6 +21,8 @@ public class LoggingSystem {
     private LoggingSystem(LogLevel logLevel){
         this.logLevel = logLevel;
         this.destinations = new CopyOnWriteArrayList<>();
+        this.logQueue     = new LinkedBlockingQueue<>(1000);
+        startWorker();
     }
 
     // double-checked locking: safe and efficient for multi-threaded access
@@ -47,9 +51,23 @@ public class LoggingSystem {
             return;
         }
         Message msg = new Message(msgLogLevel, content);
+        logQueue.offer(msg);  // non-blocking enqueue; drops if queue is full
+    }
 
-        for(Destination dst: destinations)
-           dst.printLogMessage(msg);
+    private void startWorker(){
+        Thread worker = new Thread(() -> {
+            while(!Thread.currentThread().isInterrupted()){
+                try {
+                    Message msg = logQueue.take();  // waits if empty
+                    for(Destination d : destinations)
+                        d.printLogMessage(msg);
+                } catch(InterruptedException e){
+                    Thread.currentThread().interrupt();  // restore flag and exit loop
+                }
+            }
+        });
+        worker.setDaemon(true);
+        worker.start();
     }
 
 }
