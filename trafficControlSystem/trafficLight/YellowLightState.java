@@ -7,7 +7,7 @@ public class YellowLightState implements TrafficLightState {
     @Override
     public void turnRed(TrafficSignal signal) {
 
-        System.out.println(signal.getRoad().getName() + " turning RED");
+        System.out.println("Signal turning RED");
 
         signal.setState(new RedLightState());
     }
@@ -19,6 +19,6 @@ public class YellowLightState implements TrafficLightState {
 
     @Override
     public void turnYellow(TrafficSignal signal) {
-        System.out.println(signal.getRoad().getName() + " already YELLOW");
+        System.out.println("Signal already YELLOW");
     }
 }

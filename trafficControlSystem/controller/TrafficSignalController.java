@@ -4,7 +4,6 @@ import java.util.List;
 
 import trafficControlSystem.emergency.EmergencyVehicleDetector;
 import trafficControlSystem.model.Road;
-import trafficControlSystem.system.TrafficSignal;
 
 public class TrafficSignalController {
 
@@ -22,7 +21,7 @@ public class TrafficSignalController {
 
             for (Road road : roads) {
 
-                TrafficSignal signal = road.getTrafficSignal();
+                var signal = road.getTrafficSignal();
 
                 try {
 
@@ -39,12 +38,15 @@ public class TrafficSignalController {
                     }
 
                     // Normal cycle
+                    System.out.println(road.getName() + " turning GREEN");
                     signal.turnGreen();
                     Thread.sleep(signal.getConfig().getGreenDuration() * 1000);
 
+                    System.out.println(road.getName() + " turning YELLOW");
                     signal.turnYellow();
                     Thread.sleep(signal.getConfig().getYellowDuration() * 1000);
 
+                    System.out.println(road.getName() + " turning RED");
                     signal.turnRed();
                     Thread.sleep(signal.getConfig().getRedDuration() * 1000);
 

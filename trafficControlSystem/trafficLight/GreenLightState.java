@@ -11,13 +11,13 @@ public class GreenLightState implements TrafficLightState {
 
     @Override
     public void turnGreen(TrafficSignal signal) {
-        System.out.println(signal.getRoad().getName() + " already GREEN");
+        System.out.println("Signal already GREEN");
     }
 
     @Override
     public void turnYellow(TrafficSignal signal) {
 
-        System.out.println(signal.getRoad().getName() + " turning YELLOW");
+        System.out.println("Signal turning YELLOW");
 
         signal.setState(new YellowLightState());
     }

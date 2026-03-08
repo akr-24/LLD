@@ -17,7 +17,7 @@ public class Road {
         this.name = name;
         this.direction = direction;
         this.vehicles = new LinkedList<>();
-        this.trafficSignal = new TrafficSignal(this, config);
+        this.trafficSignal = new TrafficSignal(config);
     }
 
     public void addVehicle(Vehicle vehicle) {
