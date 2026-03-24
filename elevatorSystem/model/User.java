@@ -1,6 +1,8 @@
 package elevatorSystem.model;
 
-public class User {
+import elevatorSystem.observer.ElevatorObserver;
+
+public class User implements ElevatorObserver {
     private final String name;
 
     public User(String name) {
@@ -9,6 +11,13 @@ public class User {
 
     public String getName() {
         return name;
+    }
+
+    @Override
+    public void onElevatorArrival(int floor, int elevatorId) {
+        System.out.println("  [Notification] " + name
+                + " -> Elevator " + elevatorId
+                + " has arrived at floor " + floor);
     }
 
     @Override

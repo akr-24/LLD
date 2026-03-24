@@ -43,6 +43,7 @@ public class ElevatorSystem {
             System.out.println("No elevator available for: " + request);
             return;
         }
+        elevator.registerObserver(request.getSourceFloor(), request.getUser());
         elevator.addRequest(request);
         System.out.println("Dispatched " + elevator + " for " + request);
     }

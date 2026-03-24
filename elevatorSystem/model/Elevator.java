@@ -2,10 +2,13 @@ package elevatorSystem.model;
 
 import elevatorSystem.enums.Direction;
 import elevatorSystem.enums.ElevatorState;
+import elevatorSystem.observer.ElevatorObserver;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.PriorityQueue;
 
 public class Elevator {
@@ -25,6 +28,9 @@ public class Elevator {
     // full requests assigned to this elevator — source of truth for boarding/exiting
     private final List<ElevatorRequest> pendingRequests;
 
+    // floor → observers waiting at that floor
+    private final Map<Integer, List<ElevatorObserver>> floorObservers;
+
     public Elevator(int id, int capacity) {
         this.id = id;
         this.capacity = capacity;
@@ -35,6 +41,25 @@ public class Elevator {
         this.upRequests = new PriorityQueue<>();
         this.downRequests = new PriorityQueue<>(Collections.reverseOrder());
         this.pendingRequests = new ArrayList<>();
+        this.floorObservers = new HashMap<>();
+    }
+
+    public synchronized void registerObserver(int sourceFloor, ElevatorObserver observer) {
+        floorObservers.computeIfAbsent(sourceFloor, k -> new ArrayList<>()).add(observer);
+    }
+
+    public synchronized void unregisterObserver(int sourceFloor, ElevatorObserver observer) {
+        List<ElevatorObserver> list = floorObservers.get(sourceFloor);
+        if (list != null) list.remove(observer);
+    }
+
+    private void notifyObservers(int floor) {
+        List<ElevatorObserver> list = floorObservers.remove(floor);
+        if (list != null) {
+            for (ElevatorObserver observer : list) {
+                observer.onElevatorArrival(floor, this.id);
+            }
+        }
     }
 
     public synchronized void addRequest(ElevatorRequest request) {
@@ -62,6 +87,7 @@ public class Elevator {
         List<ElevatorRequest> served = new ArrayList<>();
         for (ElevatorRequest request : pendingRequests) {
             if (request.getSourceFloor() == floor) {
+                notifyObservers(floor);   // remove(floor) inside cleans up automatically
                 currentLoad++;
                 System.out.println("  " + request.getUser().getName() + " boarded at floor " + floor);
             }
